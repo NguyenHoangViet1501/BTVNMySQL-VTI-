@@ -1,4 +1,5 @@
 create database University_System;
+use University_System;
 
 create table Student (
 	student_id int primary key auto_increment,
