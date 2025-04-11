@@ -2,7 +2,7 @@ create database University_System;
 use University_System;
 
 create table Student (
-	student_id int primary key auto_increment,
+    student_id int primary key auto_increment,
     full_name varchar(100) not null,
     birth_date date not null,
     gender enum('Male', 'Female'),
@@ -12,7 +12,7 @@ create table Student (
 );
 
 create table Course (
-	course_id int primary key,
+    course_id int primary key,
     course_name varchar(100),
     credits int check (credits between 1 and 5),
     professor_id int not null
@@ -20,14 +20,14 @@ create table Course (
 );
 
 create table Professor (
-	professor_id int primary key,
+    professor_id int primary key,
     full_name varchar(100) not null,
     hire_date date not null,
     email varchar(100) unique not null
     
 );
  create table Erollment (
-	student_id int not null,
+    student_id int not null,
     course_id int not null,
     enroll_date date not null,
     grade int check (grade between 1 and 20),
