@@ -80,14 +80,6 @@ INSERT INTO EmployeeProject (employeeId, projectId, assignedDate) VALUES
 (4, 3, '2021-08-15'),
 (5, 5, '2024-01-10');
 
--- Dữ liệu bảng Task
-INSERT INTO Task (taskName, projectId, employeeId) VALUES
-('Design UI', 1, 1),
-('Implement Login', 1, 3),
-('Setup CI/CD', 2, 2),
-('Train ML Model', 4, 4),
-('Deploy to Cloud', 3, 4),
-('Build REST API', 5, 5);
 
 INSERT INTO Employee (employeeName, email, salary, hireDate, departmentId, managerId) VALUES
 ('Frank Miller', 'frank@company.com', 68000.00, '2023-06-10', 1, 1),
@@ -113,27 +105,6 @@ INSERT INTO EmployeeProject (employeeId, projectId, assignedDate) VALUES
 (9, 4, '2024-02-05'),
 (10, 5, '2024-04-12');
 
-INSERT INTO Task (taskName, projectId, employeeId) VALUES
-('Create Wireframes', 1, 6),
-('Setup Database', 1, 3),
-('User Authentication', 1, 9),
-('UI Testing', 2, 2),
-('Backend API Development', 2, 5),
-('Mobile UI Design', 2, 8),
-('DevOps Pipeline', 3, 4),
-('Security Review', 3, 5),
-('Initial Data Load', 3, 7),
-('Model Evaluation', 4, 4),
-('Feature Engineering', 4, 6),
-('Hyperparameter Tuning', 4, 10),
-('API Endpoint Testing', 5, 5),
-('Swagger Documentation', 5, 7),
-('OAuth Integration', 5, 9),
-('Deploy Backend', 5, 10),
-('App Store Submission', 2, 8),
-('Bug Fixing', 1, 1),
-('Client Demo', 1, 6),
-('Project Report', 3, 7);
 
 
 -- 1 SELECT * FROM companydb.employee; 
@@ -209,9 +180,9 @@ HAVING COUNT(ep.employeeId) >= 3;
 */
 /* 23 SELECT e.employeeName
 FROM employee e JOIN employeeProject ep ON e.employeeId = ep.employeeId
-JOIN project p ON ep.projectId = p.projectId
+LEFT JOIN project p ON ep.projectId = p.projectId
 WHERE p.projectName IN ('Website Redesign', 'Mobile App')
-GROUP BY e.employeeId, e.employeeName
+GROUP BY e.employeeId
 HAVING COUNT(DISTINCT p.projectName) = 2;
 */
 /* 24SELECT e2.employeeName
@@ -236,7 +207,9 @@ WHERE d.departmentName = 'Engineering';
 SELECT *
 FROM employee
 WHERE salary = (SELECT MAX(salary) FROM employee)
-AND employeeId IS NOT NULL;
+AND employeeId NOT IN (
+select distinct managerId from employee where managerId is not null
+);
 -- 28
 SELECT e.employeeName AS Employee, m.employeeName AS Manager, gm.employeeName AS GrandManager
 FROM employee e LEFT JOIN employee m ON e.managerId = m.employeeId
